@@ -1,11 +1,13 @@
 package pl.strefakursow.springadvanced.filter;
 
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
 import java.io.IOException;
 
 @Component
+@Order(1)
 public class FirstFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -14,7 +16,7 @@ public class FirstFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        System.out.println("doFilter is working!");
+        System.out.println("FirstFilter doFilter is working!");
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
