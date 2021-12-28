@@ -6,6 +6,7 @@ import pl.strefakursow.springadvanced.entity.Item;
 import pl.strefakursow.springadvanced.repository.ItemRepository;
 import pl.strefakursow.springadvanced.service.AdvancedService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,5 +30,10 @@ public class JpaAdvancedImplementation implements AdvancedService {
     @Override
     public void deleteItem(Long id) {
         ir.deleteById(id);
+    }
+
+    @Override
+    public List<Item> getItemsWithQuantityOverTwenty() {
+        return ir.getItemsWithQuantityOverTwenty();
     }
 }

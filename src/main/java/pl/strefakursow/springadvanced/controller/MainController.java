@@ -7,20 +7,17 @@ import pl.strefakursow.springadvanced.entity.Item;
 import pl.strefakursow.springadvanced.service.impl.JpaAdvancedImplementation;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @RestController
 public class MainController {
 
     @Autowired
-   JpaAdvancedImplementation jai;
+    JpaAdvancedImplementation jai;
 
     @GetMapping("/")
-    public String home(HttpServletResponse response){
-        response.addHeader("Spring", "is awesome");
-        Item item = new Item();
-        item.setName("Orzechy");
-        item.setPrice(22.2);
-        jai.saveItem(item);
-        return "First page";
+    public List<Item> home(HttpServletResponse response) {
+
+        return jai.getItemsWithQuantityOverTwenty();
     }
 }
