@@ -11,4 +11,6 @@ public interface AdvancedService {
     Optional<Item> findItem(Long id);
     void deleteItem(Long id);
     List<Item> getItemsWithQuantityOverTwenty();
+    List<Item> getItemsWithQuantityOver(int selectQuantity);
+    List<Item> getItemsWithNameLike(String name);
 }
