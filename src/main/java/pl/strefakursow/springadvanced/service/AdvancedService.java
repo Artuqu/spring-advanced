@@ -1,5 +1,7 @@
 package pl.strefakursow.springadvanced.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import pl.strefakursow.springadvanced.entity.Item;
 
 import java.util.List;
@@ -13,4 +15,8 @@ public interface AdvancedService {
     List<Item> getItemsWithQuantityOverTwenty();
     List<Item> getItemsWithQuantityOver(int selectQuantity);
     List<Item> getItemsWithNameLike(String name);
+    List<Item> findByQuantity (Integer quantity);
+    List<Item> findByQuantityBetween(int minQuantity, int maxQuantity);
+    List<Item> findByQuantityGreaterThanEqualOrderByQuantityDesc (int minQuantity);
+    Page<Item> findAll(Pageable pageable);
 }

@@ -19,4 +19,10 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     @Query("select i from Item i where i.name like :name")
     List<Item> getItemsWithNameLike(@Param("name") String name);
+
+    List<Item> findByQuantity (Integer quantity);
+
+    List<Item> findByQuantityBetween(int minQuantity, int maxQuantity);
+
+    List<Item> findByQuantityGreaterThanEqualOrderByQuantityDesc (int minQuantity);
 }

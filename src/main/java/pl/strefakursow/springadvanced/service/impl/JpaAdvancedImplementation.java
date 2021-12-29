@@ -1,8 +1,11 @@
 package pl.strefakursow.springadvanced.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.strefakursow.springadvanced.entity.Item;
+import pl.strefakursow.springadvanced.repository.ItemPagingAndSortingRepository;
 import pl.strefakursow.springadvanced.repository.ItemRepository;
 import pl.strefakursow.springadvanced.service.AdvancedService;
 
@@ -14,7 +17,8 @@ public class JpaAdvancedImplementation implements AdvancedService {
 
     @Autowired
     ItemRepository ir;
-
+    @Autowired
+    ItemPagingAndSortingRepository itemPagingAndSortingRepository;
 
     @Override
     public void saveItem(Item item) {
@@ -45,5 +49,25 @@ public class JpaAdvancedImplementation implements AdvancedService {
     @Override
     public List<Item> getItemsWithNameLike(String name) {
         return ir.getItemsWithNameLike(name);
+    }
+
+    @Override
+    public List<Item> findByQuantity(Integer quantity) {
+        return ir.findByQuantity(quantity);
+    }
+
+    @Override
+    public List<Item> findByQuantityBetween(int minQuantity, int maxQuantity) {
+        return ir.findByQuantityBetween(minQuantity, maxQuantity);
+    }
+
+    @Override
+    public List<Item> findByQuantityGreaterThanEqualOrderByQuantityDesc(int minQuantity) {
+        return ir.findByQuantityGreaterThanEqualOrderByQuantityDesc(minQuantity);
+    }
+
+    @Override
+    public Page<Item> findAll(Pageable pageable) {
+        return itemPagingAndSortingRepository.findAll(pageable);
     }
 }

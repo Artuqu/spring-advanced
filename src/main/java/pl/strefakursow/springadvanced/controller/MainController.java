@@ -1,6 +1,8 @@
 package pl.strefakursow.springadvanced.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +15,7 @@ import java.util.Optional;
 @RestController
 public class MainController {
 
+    final int pageSize = 3;
     @Autowired
     JpaAdvancedImplementation jai;
 
@@ -38,6 +41,26 @@ public class MainController {
         return jai.getItemsWithNameLike(regex);
     }
 
+    @GetMapping("/main")
+    public List<Item> main() {
+        return jai.findByQuantity(20);
+    }
 
+    @GetMapping("/min")
+//    public List<Item> min (){
+//        return jai.findByQuantityBetween(4,30);
+//    }
+    public List<Item> min() {
+        return jai.findByQuantityGreaterThanEqualOrderByQuantityDesc(5);
+    }
+
+    @GetMapping("/items")
+    public List<Item> items(@RequestParam(defaultValue = "0") String page) {
+        int currentPage = Integer.parseInt(page);
+        PageRequest pageRequest = PageRequest.of(currentPage, pageSize);
+        Page<Item> itemPages = jai.findAll(pageRequest);
+
+        return itemPages.getContent();
+    }
 }
 
