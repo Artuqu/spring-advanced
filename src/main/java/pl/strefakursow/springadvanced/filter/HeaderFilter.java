@@ -15,7 +15,6 @@ public class HeaderFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         response.addHeader("Spring", "is the best");
-        System.out.println("HeaderFilter doFilter is working!");
         filterChain.doFilter(servletRequest, response);
     }
 }

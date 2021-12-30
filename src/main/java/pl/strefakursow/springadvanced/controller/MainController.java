@@ -15,7 +15,7 @@ import java.util.Optional;
 @RestController
 public class MainController {
 
-    final int pageSize = 3;
+    public static final int pageSize = 3;
     @Autowired
     JpaAdvancedImplementation jai;
 
