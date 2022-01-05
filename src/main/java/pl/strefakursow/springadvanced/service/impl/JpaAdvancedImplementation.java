@@ -15,10 +15,15 @@ import java.util.Optional;
 @Service
 public class JpaAdvancedImplementation implements AdvancedService {
 
-    @Autowired
+
     ItemRepository ir;
-    @Autowired
     ItemPagingAndSortingRepository itemPagingAndSortingRepository;
+
+    @Autowired
+    JpaAdvancedImplementation(ItemRepository ir, ItemPagingAndSortingRepository itemPagingAndSortingRepository) {
+        this.ir = ir;
+        this.itemPagingAndSortingRepository = itemPagingAndSortingRepository;
+    }
 
     @Override
     public void saveItem(Item item) {
