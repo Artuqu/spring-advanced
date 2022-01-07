@@ -1,6 +1,8 @@
 package pl.strefakursow.springadvanced.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -9,7 +11,15 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity(debug = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception{
-authenticationManagerBuilder.inMemoryAuthentication().withUser("user").password("{noop}user").roles("USER");
+    AuthenticationProvider authenticationProvider;
+
+    @Autowired
+    SecurityConfig (AuthenticationProvider authenticationProvider) {
+        this.authenticationProvider = authenticationProvider;
+
+    }
+
+    protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+        authenticationManagerBuilder.authenticationProvider(authenticationProvider);
     }
 }

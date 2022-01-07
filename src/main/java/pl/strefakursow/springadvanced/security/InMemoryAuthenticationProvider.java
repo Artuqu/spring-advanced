@@ -2,18 +2,22 @@ package pl.strefakursow.springadvanced.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
-
+@Component
 public class InMemoryAuthenticationProvider implements AuthenticationProvider {
 
     public static final String USERNAME_CANNOT_BE_NULL = "Username cannot be null!";
     public static final String CREDENTIALS_CANNOT_BE_NULL = "Credentials cannot be null!";
+    public static final String WRONG_PASSWORD = "Wrong password!";
+
     UserDetailsService userDetailsService;
 
     @Autowired
@@ -35,6 +39,9 @@ public class InMemoryAuthenticationProvider implements AuthenticationProvider {
 
         String password = credentials.toString();
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        if(!password.equals(userDetails.getPassword())){
+            throw new BadCredentialsException(WRONG_PASSWORD);
+        }
 
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password, userDetails.getAuthorities());
         return token;
