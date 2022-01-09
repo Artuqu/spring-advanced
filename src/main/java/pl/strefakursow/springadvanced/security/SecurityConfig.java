@@ -15,7 +15,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     AuthenticationProvider authenticationProvider;
 
     @Autowired
-    SecurityConfig (AuthenticationProvider authenticationProvider) {
+    SecurityConfig(AuthenticationProvider authenticationProvider) {
         this.authenticationProvider = authenticationProvider;
 
     }
@@ -29,13 +29,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
+                .antMatchers("/admin_panel").hasAuthority("ADMIN")
                 .antMatchers("/css/**").permitAll()
+                .antMatchers("/js/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .and()
-                .csrf().disable();
+                .defaultSuccessUrl("/user_panel", true);
 
     }
 }

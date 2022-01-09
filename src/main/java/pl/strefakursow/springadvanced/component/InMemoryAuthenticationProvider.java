@@ -1,4 +1,4 @@
-package pl.strefakursow.springadvanced.security;
+package pl.strefakursow.springadvanced.component;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
