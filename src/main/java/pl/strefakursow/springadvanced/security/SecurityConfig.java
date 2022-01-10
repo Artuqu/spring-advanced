@@ -33,14 +33,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
+                .antMatchers("/api/test").permitAll()
                 .antMatchers("/admin_panel").hasAuthority("ADMIN")
                 .antMatchers("/css/**").permitAll()
                 .antMatchers("/js/**").permitAll()
-                .anyRequest().authenticated()
+//                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/user_panel", true);
+                .defaultSuccessUrl("/user_panel", true)
+                .and()
+                .csrf()
+                .disable();
 
     }
 }

@@ -6,16 +6,17 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Collection;
 
+@AllArgsConstructor
 @Getter
 @Setter
 @ToString
-@AllArgsConstructor
 @Entity
 public class User implements UserDetails {
 
@@ -26,10 +27,15 @@ public class User implements UserDetails {
     private String username;
     private String password;
 
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-//        TODO
+
         return null;
     }
 
