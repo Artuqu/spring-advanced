@@ -7,6 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import pl.strefakursow.springadvanced.service.impl.JpaUserDetailsService;
@@ -15,6 +16,7 @@ import pl.strefakursow.springadvanced.service.impl.JpaUserDetailsService;
 public class CustomDaoAuthenticationProvider implements AuthenticationProvider {
 
     JpaUserDetailsService jpaUserDetailsService;
+    PasswordEncoder passwordEncoder;
 
     public static final String USERNAME_CANNOT_BE_NULL = "Username cannot be null";
     public static final String CREDENTIALS_CANNOT_BE_NULL = "Credentials cannot be null!";
@@ -22,8 +24,9 @@ public class CustomDaoAuthenticationProvider implements AuthenticationProvider {
 
 
     @Autowired
-    CustomDaoAuthenticationProvider(JpaUserDetailsService jpaUserDetailsService) {
+    CustomDaoAuthenticationProvider(JpaUserDetailsService jpaUserDetailsService, PasswordEncoder passwordEncoder) {
         this.jpaUserDetailsService = jpaUserDetailsService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -40,7 +43,8 @@ public class CustomDaoAuthenticationProvider implements AuthenticationProvider {
         String password = credentials.toString();
         UserDetails loadUserByUsername = jpaUserDetailsService.loadUserByUsername(name);
         String getPassword = loadUserByUsername.getPassword();
-        if (!password.equals(getPassword)) {
+
+        if (!passwordEncoder.matches(password, getPassword)) {
             throw new BadCredentialsException(WRONG_PASSWORD);
         }
         return new UsernamePasswordAuthenticationToken(name, password, loadUserByUsername.getAuthorities());

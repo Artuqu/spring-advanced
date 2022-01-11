@@ -1,9 +1,6 @@
 package pl.strefakursow.springadvanced.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -13,11 +10,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Collection;
 
-@AllArgsConstructor
 @Getter
 @Setter
 @ToString
 @Entity
+@NoArgsConstructor
 public class User implements UserDetails {
 
     @Id

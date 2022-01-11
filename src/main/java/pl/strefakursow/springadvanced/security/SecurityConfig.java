@@ -1,11 +1,15 @@
 package pl.strefakursow.springadvanced.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.strefakursow.springadvanced.component.CustomDaoAuthenticationProvider;
 import pl.strefakursow.springadvanced.service.impl.JpaUserDetailsService;
 
@@ -14,13 +18,15 @@ import pl.strefakursow.springadvanced.service.impl.JpaUserDetailsService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     JpaUserDetailsService jpaUserDetailsService;
-    CustomDaoAuthenticationProvider customDaoAuthenticationProvider;
 
     @Autowired
-    SecurityConfig(JpaUserDetailsService jpaUserDetailsService, CustomDaoAuthenticationProvider customDaoAuthenticationProvider) {
+    SecurityConfig(JpaUserDetailsService jpaUserDetailsService) {
         this.jpaUserDetailsService = jpaUserDetailsService;
-        this.customDaoAuthenticationProvider = customDaoAuthenticationProvider;
     }
+
+    @Autowired
+    @Lazy
+    CustomDaoAuthenticationProvider customDaoAuthenticationProvider;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -33,19 +39,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
-                .antMatchers("/api/test").permitAll()
                 .antMatchers("/admin_panel").hasAuthority("ADMIN")
                 .antMatchers("/css/**").permitAll()
                 .antMatchers("/js/**").permitAll()
-//                .anyRequest().authenticated()
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
+//                .anyRequest().permitAll()
                 .and()
                 .formLogin()
                 .loginPage("/login")
                 .defaultSuccessUrl("/user_panel", true)
                 .and()
-                .csrf()
-                .disable();
+                .logout()
+                .logoutUrl("/user_logout")
+                .logoutSuccessUrl("/login?logout")
+                .deleteCookies("cookies");
+//                .and()
+//                .csrf()
+//                .disable();
+    }
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
