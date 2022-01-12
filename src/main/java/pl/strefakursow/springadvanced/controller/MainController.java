@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pl.strefakursow.springadvanced.component.SignUpMailer;
+import pl.strefakursow.springadvanced.component.mailer.SignUpMailer;
 import pl.strefakursow.springadvanced.entity.Item;
 import pl.strefakursow.springadvanced.service.impl.JpaAdvancedImplementation;
 
