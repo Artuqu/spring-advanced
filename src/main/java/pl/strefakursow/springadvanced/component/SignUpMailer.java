@@ -11,16 +11,16 @@ public class SignUpMailer {
     JavaMailSender javaMailSender;
 
     @Autowired
-    SignUpMailer(JavaMailSender javaMailSender) {
-        this.javaMailSender = javaMailSender;
+    SignUpMailer(JavaMailSender javaMailSender){
+        this.javaMailSender=javaMailSender;
     }
 
-    public void sendMessage(String to, String subject, String text) {
+
+    public void sendMessage(String to, String subject, String text){
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
         message.setSubject(subject);
         message.setText(text);
         javaMailSender.send(message);
     }
-
 }

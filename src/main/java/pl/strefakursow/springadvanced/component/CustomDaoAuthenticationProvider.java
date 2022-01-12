@@ -15,12 +15,13 @@ import pl.strefakursow.springadvanced.service.impl.JpaUserDetailsService;
 @Component
 public class CustomDaoAuthenticationProvider implements AuthenticationProvider {
 
+    JpaUserDetailsService jpaUserDetailsService;
+    PasswordEncoder passwordEncoder;
+
     public static final String USERNAME_CANNOT_BE_NULL = "Username cannot be null";
     public static final String CREDENTIALS_CANNOT_BE_NULL = "Credentials cannot be null!";
     public static final String WRONG_PASSWORD = "Wrong password!";
 
-    PasswordEncoder passwordEncoder;
-    JpaUserDetailsService jpaUserDetailsService;
 
     @Autowired
     CustomDaoAuthenticationProvider(JpaUserDetailsService jpaUserDetailsService, PasswordEncoder passwordEncoder) {
