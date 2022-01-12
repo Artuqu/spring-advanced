@@ -27,5 +27,9 @@ color: var(--main-color);
 
 .menu-separator-v{
 border-left: 2px solid white;
+}
 
+.none-button{
+border:none;
+background:none;
 }

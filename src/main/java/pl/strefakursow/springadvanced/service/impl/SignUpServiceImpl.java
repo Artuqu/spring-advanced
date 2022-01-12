@@ -29,4 +29,5 @@ public class SignUpServiceImpl implements SignUpService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
+
 }
