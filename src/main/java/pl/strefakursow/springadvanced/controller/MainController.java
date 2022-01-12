@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pl.strefakursow.springadvanced.component.SignUpMailer;
 import pl.strefakursow.springadvanced.entity.Item;
 import pl.strefakursow.springadvanced.service.impl.JpaAdvancedImplementation;
 
@@ -16,8 +17,15 @@ import java.util.Optional;
 public class MainController {
 
     public static final int pageSize = 3;
-    @Autowired
+
     JpaAdvancedImplementation jai;
+    SignUpMailer signUpMailer;
+
+    @Autowired
+    MainController(JpaAdvancedImplementation jai, SignUpMailer signUpMailer) {
+        this.jai = jai;
+        this.signUpMailer = signUpMailer;
+    }
 
     @GetMapping("/")
     public List<Item> home() {
@@ -61,6 +69,12 @@ public class MainController {
         Page<Item> itemPages = jai.findAll(pageRequest);
 
         return itemPages.getContent();
+    }
+
+    @GetMapping("send")
+    public String sendMail(String to, String subject, String text) {
+        signUpMailer.sendMessage("springpoczta@gmail.com", "First mail", "Works properly!");
+        return "Mail was sent";
     }
 }
 
