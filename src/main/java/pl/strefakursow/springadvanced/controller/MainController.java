@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.strefakursow.springadvanced.component.mailer.SignUpMailer;
 import pl.strefakursow.springadvanced.entity.Item;
+import pl.strefakursow.springadvanced.entity.User;
+import pl.strefakursow.springadvanced.repository.UserRepository;
 import pl.strefakursow.springadvanced.service.impl.JpaAdvancedImplementation;
 
 import java.util.List;
@@ -20,11 +22,13 @@ public class MainController {
 
     JpaAdvancedImplementation jai;
     SignUpMailer signUpMailer;
+    UserRepository userRepository;
 
     @Autowired
-    MainController(JpaAdvancedImplementation jai, SignUpMailer signUpMailer) {
+    MainController(JpaAdvancedImplementation jai, SignUpMailer signUpMailer, UserRepository userRepository) {
         this.jai = jai;
         this.signUpMailer = signUpMailer;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/")
@@ -75,6 +79,19 @@ public class MainController {
     public String sendMail(String to, String subject, String text) {
         signUpMailer.sendMessage("springpoczta@gmail.com", "First mail", "Works properly!");
         return "Mail was sent";
+    }
+
+    @GetMapping("confirm_email")
+    public String confirmEmail(@RequestParam(name = "token") String token) {
+        Optional<User> optionalUser = userRepository.findByConfirmationToken(token);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setEnabled(true);
+            userRepository.save(user);
+            return "Your account has been activated.";
+        } else {
+            return "Given token does not exist.";
+        }
     }
 }
 

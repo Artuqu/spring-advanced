@@ -22,6 +22,6 @@ public class SignUpMailTextFactory {
     }
 
     public String getConfirmationMailText(String token) {
-        return text + link + token;
+        return text + " " + link + token;
     }
 }

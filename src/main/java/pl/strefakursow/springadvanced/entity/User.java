@@ -4,10 +4,7 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.util.Collection;
 
@@ -27,6 +24,11 @@ public class User implements UserDetails {
 
     @Email
     private String email;
+
+    private String confirmationToken;
+
+    @Column(columnDefinition = "boolean default false")
+    private boolean enabled = false;
 
     public User(String username, String password) {
         this.username = username;
@@ -58,7 +60,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 
 }

@@ -4,15 +4,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import pl.strefakursow.springadvanced.component.mailer.RandomStringFactory;
 import pl.strefakursow.springadvanced.component.mailer.SignUpMailer;
 import pl.strefakursow.springadvanced.entity.User;
 import pl.strefakursow.springadvanced.repository.UserRepository;
 import pl.strefakursow.springadvanced.service.SignUpService;
 
+import java.util.Random;
+
 @Service
 public class SignUpServiceImpl implements SignUpService {
 
-    public static final String THIS_ID_IS_ALREADY_IN_USE = "This id is already in use!";
+    public static final String THIS_ID_IS_ALREADY_IN_USE = "Can't sing up user. It already has set id. User ";
+    public static final int TOKEN_LENGTH = 15;
 
     UserRepository userRepository;
     PasswordEncoder passwordEncoder;
@@ -28,11 +32,11 @@ public class SignUpServiceImpl implements SignUpService {
 
     @Override
     public User signUpUser(User user) {
-        Assert.isNull(user.getIdUser(), "Can't sing up user. It already has set id. User " + user);
+        Assert.isNull(user.getIdUser(), THIS_ID_IS_ALREADY_IN_USE + user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        signUpMailer.sendConfirmationLink(user.getEmail(),"212SS$$");
-        return user;
-//                userRepository.save(user);
+        String token = RandomStringFactory.getRandomString(TOKEN_LENGTH);
+        user.setConfirmationToken(token);
+        signUpMailer.sendConfirmationLink(user.getEmail(), token);
+        return userRepository.save(user);
     }
-
 }
