@@ -2,12 +2,16 @@ package pl.strefakursow.springadvanced.entity;
 
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @Getter
 @Setter
 @ToString
@@ -30,17 +34,18 @@ public class User implements UserDetails {
     @Column(columnDefinition = "boolean default false")
     private boolean enabled = false;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "id_user"), inverseJoinColumns = @JoinColumn(name = "id_role"))
+    private List<Role> roles;
+
     public User(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
-
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        //TODO
-        return null;
+        return roles.stream().map(i -> new SimpleGrantedAuthority(i.getName())).collect(Collectors.toSet());
     }
 
     @Override

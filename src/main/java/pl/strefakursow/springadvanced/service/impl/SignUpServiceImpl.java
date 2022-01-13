@@ -6,11 +6,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import pl.strefakursow.springadvanced.component.mailer.RandomStringFactory;
 import pl.strefakursow.springadvanced.component.mailer.SignUpMailer;
+import pl.strefakursow.springadvanced.entity.Role;
 import pl.strefakursow.springadvanced.entity.User;
+import pl.strefakursow.springadvanced.repository.RoleRepository;
 import pl.strefakursow.springadvanced.repository.UserRepository;
 import pl.strefakursow.springadvanced.service.SignUpService;
 
-import java.util.Random;
+import java.util.Optional;
 
 @Service
 public class SignUpServiceImpl implements SignUpService {
@@ -23,10 +25,14 @@ public class SignUpServiceImpl implements SignUpService {
     SignUpMailer signUpMailer;
 
     @Autowired
+    RoleRepository roleRepository;
+
+    @Autowired
     SignUpServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, SignUpMailer signUpMailer) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.signUpMailer = signUpMailer;
+
     }
 
 
@@ -36,6 +42,10 @@ public class SignUpServiceImpl implements SignUpService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         String token = RandomStringFactory.getRandomString(TOKEN_LENGTH);
         user.setConfirmationToken(token);
+        Optional<Role> roleOptional = roleRepository.findByName("USER");
+        if(roleOptional.isPresent()){
+            user.getRoles().add(roleOptional.get());
+        }
         signUpMailer.sendConfirmationLink(user.getEmail(), token);
         return userRepository.save(user);
     }
