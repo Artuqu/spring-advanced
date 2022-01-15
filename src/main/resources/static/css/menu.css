@@ -1,35 +1,39 @@
-:root{
---main-color: #68bd45;
+:root {
+    --primary-blue: #3452ff;
+    --secondary-blue: #0127ff;
 }
 
-body{
-margin: 0;
+body {
+    margin: 0;
 }
 
-.menu{
-display: flex;
-flex-direction: row;
-background-color: var(--main-color);
-justify-content: flex-end;
+.menu {
+    display: flex;
+    flex-direction: row;
+    background-color: var(--primary-blue);
+    justify-content: flex-end;
 }
 
-.menu-element{
-padding: 10px 5px 10px 5px;
-text-decoration: none;
-color: white;
-font-size: 20px;
+.menu-element {
+    padding: 10px 5px 10px 5px;
+    text-decoration: none;
+    color: white;
+    font-size: 1.3rem;
+    font-weight: 700;
+    font-family: "Nunito", sans-serif;
+    transition: 0.3s;
+    cursor: pointer;
 }
 
-.menu-element:hover{
-background-color: white;
-color: var(--main-color);
+.menu-element:hover {
+    background-color: var(--secondary-blue);
 }
 
-.menu-separator-v{
-border-left: 2px solid white;
+.menu-separator-v {
+    border-left: 1px solid white;
 }
 
-.none-button{
-border:none;
-background:none;
+.none-button {
+    border: none;
+    background: none;
 }
