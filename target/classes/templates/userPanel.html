@@ -4,10 +4,16 @@
     <meta charset="UTF-8">
     <title>User Panel</title>
     <link rel="stylesheet" type="text/css" href="css/menu.css">
+    <link rel="stylesheet" type="text/css" href="css/userPanel.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200&display=swap" rel="stylesheet">
 </head>
 <body>
 <div th:insert="menu.html :: div"></div>
-<h1>User Panel</h1>
-<h2 th:text="${greetings}"></h2>
+<div class="user-panel-wrapper">
+
+<div class="title user-panel-element">User Panel</div>
+<div class="greetings user-panel-element" th:text="${greetings}"></div>
+
+</div>
 </body>
 </html>
